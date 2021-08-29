@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b277fb5b450949d42be68ba1617af001, type: 3}
+  m_Name: Globals
+  m_EditorClassIdentifier: 
+  SnakeCell: {fileID: 8566567047676669696, guid: 50a98ba8d38d02a40accde32c44706aa,
+    type: 3}
+  BlockCell: {fileID: 2251517542596018321, guid: 24919451c68c2c24485e26ce07ba6803,
+    type: 3}
+  EdibleCell: {fileID: 4496223022279569742, guid: c5e96c333ed4eb84783d57233b3d2e5a,
+    type: 3}
+  Speed: 2
