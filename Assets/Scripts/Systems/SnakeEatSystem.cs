@@ -32,6 +32,7 @@ public class SnakeEatSystem : ReactiveSystem<GameEntity>
             edibleEntity.position.value.X += Random.Range(-5, 5);
             edibleEntity.position.value.Y += Random.Range(-5, 5);
             edibleEntity.gameObject.value.transform.position = new Vector2(edibleEntity.position.value.X, edibleEntity.position.value.Y);
+            headEntity.isGrowing = true;
         }
     }
 }

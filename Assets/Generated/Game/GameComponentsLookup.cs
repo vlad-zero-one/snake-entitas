@@ -15,18 +15,19 @@ public static class GameComponentsLookup {
     public const int Edible = 4;
     public const int GameObject = 5;
     public const int Globals = 6;
-    public const int Head = 7;
-    public const int LastMovementDirection = 8;
-    public const int Moving = 9;
-    public const int Position = 10;
-    public const int PreviousSegment = 11;
-    public const int Snake = 12;
-    public const int SnakeView = 13;
-    public const int Tail = 14;
-    public const int Tick = 15;
-    public const int TickTime = 16;
+    public const int Growing = 7;
+    public const int Head = 8;
+    public const int LastMovementDirection = 9;
+    public const int Moving = 10;
+    public const int Position = 11;
+    public const int PreviousSegment = 12;
+    public const int Snake = 13;
+    public const int SnakeView = 14;
+    public const int Tail = 15;
+    public const int Tick = 16;
+    public const int TickTime = 17;
 
-    public const int TotalComponents = 17;
+    public const int TotalComponents = 18;
 
     public static readonly string[] componentNames = {
         "Active",
@@ -36,6 +37,7 @@ public static class GameComponentsLookup {
         "Edible",
         "GameObject",
         "Globals",
+        "Growing",
         "Head",
         "LastMovementDirection",
         "Moving",
@@ -56,6 +58,7 @@ public static class GameComponentsLookup {
         typeof(EdibleComponent),
         typeof(GameObjectComponent),
         typeof(GlobalsComponent),
+        typeof(GrowingComponent),
         typeof(HeadComponent),
         typeof(LastMovementDirectionComponent),
         typeof(MovingComponent),

@@ -2,11 +2,11 @@
 using Entitas;
 using UnityEngine;
 
-public class MoveSystem : ReactiveSystem<GameEntity>
+public class SnakeGrowingSystem : ReactiveSystem<GameEntity>
 {
     private Contexts _contexts;
 
-    public MoveSystem(Contexts contexts) : base(contexts.game)
+    public SnakeGrowingSystem(Contexts contexts) : base(contexts.game)
     {
         _contexts = contexts;
     }
@@ -23,32 +23,8 @@ public class MoveSystem : ReactiveSystem<GameEntity>
 
     protected override void Execute(List<GameEntity> entities)
     {
-        if (!_contexts.game.headEntity.isGrowing)
-        {
-            GameEntity head = _contexts.game.headEntity;
-            GameEntity tail = _contexts.game.tailEntity;
-            var direction = _contexts.game.direction;
-
-            tail.isTail = false;
-            tail.previousSegment.value.isTail = true;
-            head.ReplacePreviousSegment(tail);
-            head.isHead = false;
-            tail.isHead = true;
-            tail.position.value = head.position.value;
-
-            if (direction.value == DirectionEnum.N)
-                tail.position.value.Y++;
-            else if (direction.value == DirectionEnum.E)
-                tail.position.value.X++;
-            else if (direction.value == DirectionEnum.S)
-                tail.position.value.Y--;
-            else if (direction.value == DirectionEnum.W)
-                tail.position.value.X--;
-            tail.isMoving = true;
-
-            _contexts.game.lastMovementDirection.value = _contexts.game.direction.value;
-        }
-        else
+        /*
+        if (_contexts.game.headEntity.isGrowing)
         {
             var currentHead = _contexts.game.headEntity;
             var cellPrefab = _contexts.game.globals.value.SnakeCell;
@@ -79,7 +55,9 @@ public class MoveSystem : ReactiveSystem<GameEntity>
             //сделать ещё одну систему, сбрасывающую этот флаг, поставить после вырастания на след. круге
             //_contexts.game.headEntity.isGrowing = false;
             currentHead.isGrowing = false;
+            newHead.isGrowing = true;
             currentHead.ReplacePreviousSegment(newHead);
         }
+        */
     }
 }
