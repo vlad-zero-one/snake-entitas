@@ -43,9 +43,11 @@ public class MoveAndGrowSystem : ReactiveSystem<GameEntity>
         head.ReplacePreviousSegment(tail);
         head.isHead = false;
         tail.isHead = true;
+        _contexts.game.globals.value.SnakePositionsExceptHead.Remove(tail.position.value);
         tail.position.value = head.position.value;
 
         CalculatePosition(tail.position);
+        _contexts.game.globals.value.SnakePositionsExceptHead.Add(head.position.value);
 
         tail.isMoving = true;
 
@@ -73,6 +75,7 @@ public class MoveAndGrowSystem : ReactiveSystem<GameEntity>
 
         currentHead.isGrowing = false;
         currentHead.ReplacePreviousSegment(newHead);
+        _contexts.game.globals.value.SnakePositionsExceptHead.Add(currentHead.position.value);
     }
 
     private void CalculatePosition(PositionComponent position)

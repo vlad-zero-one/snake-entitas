@@ -14,7 +14,8 @@ public class Globals : ScriptableObject
 
     public int BorderSize;
 
-    public List<IntVec2> AddBarrier;
+    public List<IntVec2> BarrierPositions;
 
-    public List<IntVec2> OccupiedPositions = new List<IntVec2>();
+    public List<IntVec2> SnakePositionsExceptHead = new List<IntVec2>();
+    public List<IntVec2> BorderPositions = new List<IntVec2>();
 }

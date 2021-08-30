@@ -22,9 +22,11 @@ public class CollisionCheckSystem : ReactiveSystem<GameEntity>
 
     protected override void Execute(List<GameEntity> entities)
     {
-        var occupiedPositions = _contexts.game.globals.value.OccupiedPositions;
+        var borderPositions = _contexts.game.globals.value.BorderPositions;
+        var barrierPositions = _contexts.game.globals.value.BarrierPositions;
         var headPosition = entities.SingleEntity().position.value;
-        if (occupiedPositions.Contains(headPosition))
+        var snakePositionsExceptHead = _contexts.game.globals.value.SnakePositionsExceptHead;
+        if (borderPositions.Contains(headPosition) || barrierPositions.Contains(headPosition) || snakePositionsExceptHead.Contains(headPosition))
         {
             Debug.Log("GAME OVER");
         }
