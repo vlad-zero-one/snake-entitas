@@ -13,27 +13,28 @@ public class InitializeSnakeSystem : IInitializeSystem
     public void Initialize()
     {
         var cellPrefab = _contexts.game.globals.value.SnakeCell;
+        int center = _contexts.game.globals.value.BorderSize / 2;
 
         var head = _contexts.game.CreateEntity();
-        head.AddPosition(new IntVec2(0, 2));
+        head.AddPosition(new IntVec2(center, center + 2));
         head.isSnake = true;
         head.isHead = true;
-        var go = GameObject.Instantiate(cellPrefab, new Vector2(0, 2), Quaternion.identity);
+        var go = GameObject.Instantiate(cellPrefab, new Vector2(center, center + 2), Quaternion.identity);
         head.AddGameObject(go);
 
         var part = _contexts.game.CreateEntity();
-        part.AddPosition(new IntVec2(0, 1));
+        part.AddPosition(new IntVec2(center, center + 1));
         part.isSnake = true;
         part.AddPreviousSegment(head);
-        go = GameObject.Instantiate(cellPrefab, new Vector2(0, 1), Quaternion.identity);
+        go = GameObject.Instantiate(cellPrefab, new Vector2(center, center + 1), Quaternion.identity);
         part.AddGameObject(go);
 
         var tail = _contexts.game.CreateEntity();
-        tail.AddPosition(new IntVec2(0, 0));
+        tail.AddPosition(new IntVec2(center, center));
         tail.isSnake = true;
         tail.isTail = true;
         tail.AddPreviousSegment(part);
-        go = GameObject.Instantiate(cellPrefab, new Vector2(0, 0), Quaternion.identity);
+        go = GameObject.Instantiate(cellPrefab, new Vector2(center, center), Quaternion.identity);
         tail.AddGameObject(go);
 
         _contexts.game.ReplaceDirection(DirectionEnum.N);

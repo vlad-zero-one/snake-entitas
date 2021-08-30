@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Entitas;
 using System.Collections;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameController : MonoBehaviour
         Contexts contexts = Contexts.sharedInstance;
 
         contexts.game.SetGlobals(Globals);
+
+        SetCamera(contexts);
 
         _systems = CreateSystems(contexts);
 
@@ -28,16 +31,22 @@ public class GameController : MonoBehaviour
     {
         return new Feature("Game")
             .Add(new InitializeSnakeSystem(contexts))
+            .Add(new InitializeOccupiedPossitions(contexts))
             .Add(new InitializeEdibleSystem(contexts))
             .Add(new InputSystem(contexts))
-            //.Add(new DropGrowingFlagSystem(contexts))
-            .Add(new MoveSystem(contexts))
+            .Add(new MoveAndGrowSystem(contexts))
+            .Add(new CollisionCheckSystem(contexts))
             .Add(new SnakeEatSystem(contexts))
-            //.Add(new SnakeGrowingSystem(contexts))
             .Add(new SnakeViewSystem(contexts))
             .Add(new ChangeDeltaTimeSystem(contexts))
             .Add(new IncrementTickSystem(contexts))
             ;
 
+    }
+
+    private void SetCamera(Contexts contexts)
+    {
+        Camera.main.transform.position = new Vector3(contexts.game.globals.value.BorderSize / 2 - 0.5f, contexts.game.globals.value.BorderSize / 2 - 0.5f, -10);
+        Camera.main.orthographicSize = contexts.game.globals.value.BorderSize / 2 + 3;
     }
 }

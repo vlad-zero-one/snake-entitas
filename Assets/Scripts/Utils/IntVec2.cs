@@ -1,4 +1,5 @@
-﻿public struct IntVec2
+﻿[System.Serializable]
+public struct IntVec2
 {
     public int X;
     public int Y;
