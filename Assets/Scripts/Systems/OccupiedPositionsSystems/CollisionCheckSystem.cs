@@ -12,19 +12,19 @@ public class CollisionCheckSystem : ReactiveSystem<GameEntity>
     }
     protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
-        return context.CreateCollector(GameMatcher.Moving);
+        return context.CreateCollector(GameMatcher.Tick);
     }
 
     protected override bool Filter(GameEntity entity)
     {
-        return entity.isMoving;
+        return entity.isTick;
     }
 
     protected override void Execute(List<GameEntity> entities)
     {
         var borderPositions = _contexts.game.globals.value.BorderPositions;
         var barrierPositions = _contexts.game.globals.value.BarrierPositions;
-        var headPosition = entities.SingleEntity().position.value;
+        var headPosition = _contexts.game.headEntity.position.value;
         var snakePositionsExceptHead = _contexts.game.globals.value.SnakePositionsExceptHead;
         if (borderPositions.Contains(headPosition) || barrierPositions.Contains(headPosition) || snakePositionsExceptHead.Contains(headPosition))
         {

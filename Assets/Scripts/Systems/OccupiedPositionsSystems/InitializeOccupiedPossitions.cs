@@ -43,7 +43,7 @@ public class InitializeOccupiedPossitions : IInitializeSystem
 
     private void CreateBarrierBlock(int x, int y)
     {
-        _contexts.game.globals.value.BarrierPositions.Add(CreateBlock(x, y));
+        CreateBlock(x, y);
     }
 
     private IntVec2 CreateBlock(int x, int y)

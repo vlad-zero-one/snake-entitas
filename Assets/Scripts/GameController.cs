@@ -49,4 +49,10 @@ public class GameController : MonoBehaviour
         Camera.main.transform.position = new Vector3(contexts.game.globals.value.BorderSize / 2 - 0.5f, contexts.game.globals.value.BorderSize / 2 - 0.5f, -10);
         Camera.main.orthographicSize = contexts.game.globals.value.BorderSize / 2 + 3;
     }
+
+    private void OnDisable()
+    {
+        Globals.BorderPositions.Clear();
+        Globals.SnakePositionsExceptHead.Clear();
+    }
 }
