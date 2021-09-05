@@ -13,12 +13,12 @@ public class SnakeEatSystem : ReactiveSystem<GameEntity>
 
     protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
-        return context.CreateCollector(GameMatcher.Moving);
+        return context.CreateCollector(GameMatcher.Tick);
     }
 
     protected override bool Filter(GameEntity entity)
     {
-        return entity.isMoving;
+        return true;
     }
 
     protected override void Execute(List<GameEntity> entities)
@@ -32,16 +32,23 @@ public class SnakeEatSystem : ReactiveSystem<GameEntity>
         if (headPosition.X == ediblePosition.X
             && headPosition.Y == ediblePosition.Y)
         {
-            IntVec2 position = new IntVec2(Random.Range(0, borderSize), Random.Range(0, borderSize));
-            while (barrierPositions.Contains(position)
-                    || snakePositionsExceptHead.Contains(position)
-                    || (position.X == headPosition.X && position.Y == headPosition.Y))
+            if (barrierPositions.Count + snakePositionsExceptHead.Count + 1 == borderSize * borderSize)
             {
-                position = new IntVec2(Random.Range(0, borderSize), Random.Range(0, borderSize));
+                Debug.Log("WIN!");
             }
-            _contexts.game.edibleEntity.position.value = new IntVec2(position.X, position.Y);
-            _contexts.game.edibleEntity.gameObject.value.transform.position = new Vector2(position.X, position.Y);
-            _contexts.game.headEntity.isGrowing = true;
+            else
+            {
+                IntVec2 position = new IntVec2(Random.Range(0, borderSize), Random.Range(0, borderSize));
+                while (barrierPositions.Contains(position)
+                        || snakePositionsExceptHead.Contains(position)
+                        || (position.X == headPosition.X && position.Y == headPosition.Y))
+                {
+                    position = new IntVec2(Random.Range(0, borderSize), Random.Range(0, borderSize));
+                }
+                _contexts.game.edibleEntity.position.value = new IntVec2(position.X, position.Y);
+                _contexts.game.edibleEntity.gameObject.value.transform.position = new Vector2(position.X, position.Y);
+                _contexts.game.headEntity.isGrowing = true;
+            }
         }
     }
 }

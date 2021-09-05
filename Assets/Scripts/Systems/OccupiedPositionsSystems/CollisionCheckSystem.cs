@@ -29,6 +29,7 @@ public class CollisionCheckSystem : ReactiveSystem<GameEntity>
         if (borderPositions.Contains(headPosition) || barrierPositions.Contains(headPosition) || snakePositionsExceptHead.Contains(headPosition))
         {
             Debug.Log("GAME OVER");
+            _contexts.game.isGameOver = true;
         }
     }
 }

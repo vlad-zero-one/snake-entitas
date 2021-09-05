@@ -2,11 +2,11 @@
 using Entitas;
 using UnityEngine;
 
-public class SnakeViewSystem : ReactiveSystem<GameEntity>
+public class RepositionSnakeGameObjectSystem : ReactiveSystem<GameEntity>
 {
     Contexts _contexts;
 
-    public SnakeViewSystem(Contexts contexts) : base(contexts.game)
+    public RepositionSnakeGameObjectSystem(Contexts contexts) : base(contexts.game)
     {
         _contexts = contexts;
     }
@@ -26,7 +26,6 @@ public class SnakeViewSystem : ReactiveSystem<GameEntity>
         foreach (var entity in entities)
         {
             entity.gameObject.value.transform.position = new Vector2(entity.position.value.X, entity.position.value.Y);
-            //Debug.Log(entity.gameObject.value.transform.position.ToString());
             entity.isMoving = false;
         }
     }

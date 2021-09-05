@@ -9,42 +9,52 @@
 public static class GameComponentsLookup {
 
     public const int Active = 0;
-    public const int DeltaTime = 1;
-    public const int Direction = 2;
-    public const int Eating = 3;
-    public const int Edible = 4;
-    public const int GameObject = 5;
-    public const int Globals = 6;
-    public const int Growing = 7;
-    public const int Head = 8;
-    public const int LastMovementDirection = 9;
-    public const int Moving = 10;
-    public const int Position = 11;
-    public const int PreviousSegment = 12;
-    public const int Snake = 13;
-    public const int SnakeView = 14;
-    public const int Tail = 15;
-    public const int Tick = 16;
-    public const int TickTime = 17;
+    public const int Barrier = 1;
+    public const int Border = 2;
+    public const int DeltaTime = 3;
+    public const int Direction = 4;
+    public const int Eating = 5;
+    public const int Edible = 6;
+    public const int GameObject = 7;
+    public const int GameOver = 8;
+    public const int Globals = 9;
+    public const int Growing = 10;
+    public const int Head = 11;
+    public const int LastMovementDirection = 12;
+    public const int Level = 13;
+    public const int Moving = 14;
+    public const int Position = 15;
+    public const int PreviousSegment = 16;
+    public const int Snake = 17;
+    public const int SnakeView = 18;
+    public const int StartTime = 19;
+    public const int Tail = 20;
+    public const int Tick = 21;
+    public const int TickTime = 22;
 
-    public const int TotalComponents = 18;
+    public const int TotalComponents = 23;
 
     public static readonly string[] componentNames = {
         "Active",
+        "Barrier",
+        "Border",
         "DeltaTime",
         "Direction",
         "Eating",
         "Edible",
         "GameObject",
+        "GameOver",
         "Globals",
         "Growing",
         "Head",
         "LastMovementDirection",
+        "Level",
         "Moving",
         "Position",
         "PreviousSegment",
         "Snake",
         "SnakeView",
+        "StartTime",
         "Tail",
         "Tick",
         "TickTime"
@@ -52,20 +62,25 @@ public static class GameComponentsLookup {
 
     public static readonly System.Type[] componentTypes = {
         typeof(ActiveComponent),
+        typeof(BarrierComponent),
+        typeof(BorderComponent),
         typeof(DeltaTimeComponent),
         typeof(DirectionComponent),
         typeof(EatingComponent),
         typeof(EdibleComponent),
         typeof(GameObjectComponent),
+        typeof(GameOverComponent),
         typeof(GlobalsComponent),
         typeof(GrowingComponent),
         typeof(HeadComponent),
         typeof(LastMovementDirectionComponent),
+        typeof(LevelComponent),
         typeof(MovingComponent),
         typeof(PositionComponent),
         typeof(PreviousSegmentComponent),
         typeof(SnakeComponent),
         typeof(SnakeViewComponent),
+        typeof(StartTimeComponent),
         typeof(TailComponent),
         typeof(TickComponent),
         typeof(TickTimeComponent)

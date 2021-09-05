@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 using Entitas;
+using Entitas.Unity;
 using UnityEngine;
 
 public class MoveAndGrowSystem : ReactiveSystem<GameEntity>
 {
     private Contexts _contexts;
 
+    private GameObject _snake;
+
     public MoveAndGrowSystem(Contexts contexts) : base(contexts.game)
     {
         _contexts = contexts;
+        _snake = GameObject.Find("Snake");
     }
 
     protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -43,6 +47,7 @@ public class MoveAndGrowSystem : ReactiveSystem<GameEntity>
         head.ReplacePreviousSegment(tail);
         head.isHead = false;
         tail.isHead = true;
+        tail.RemovePreviousSegment();
         _contexts.game.globals.value.SnakePositionsExceptHead.Remove(tail.position.value);
         tail.position.value = head.position.value;
 
@@ -67,9 +72,6 @@ public class MoveAndGrowSystem : ReactiveSystem<GameEntity>
         newHead.isHead = true;
 
         CalculatePosition(newHead.position);
-
-        var go = GameObject.Instantiate(cellPrefab, new Vector2(newHead.position.value.X, newHead.position.value.Y), Quaternion.identity);
-        newHead.AddGameObject(go);
 
         _contexts.game.lastMovementDirection.value = _contexts.game.direction.value;
 

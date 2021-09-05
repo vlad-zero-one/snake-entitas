@@ -1,13 +1,8 @@
 ﻿using Entitas;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class InitializeOccupiedPossitions : IInitializeSystem
 {
     private Contexts _contexts;
-
-    private GameObject _blockPrefab;
 
     public InitializeOccupiedPossitions(Contexts contexts)
     {
@@ -16,8 +11,6 @@ public class InitializeOccupiedPossitions : IInitializeSystem
 
     public void Initialize()
     {
-        _blockPrefab = _contexts.game.globals.value.BlockCell;
-
         if (_contexts.game.globals.value.BorderPositions != null)
             _contexts.game.globals.value.BorderPositions.Clear();
 
@@ -38,21 +31,19 @@ public class InitializeOccupiedPossitions : IInitializeSystem
 
     private void CreateBorderBlock(int x, int y)
     {
-        _contexts.game.globals.value.BorderPositions.Add(CreateBlock(x, y));
+        var entity = _contexts.game.CreateEntity();
+        var intvec2 = new IntVec2(x, y);
+        entity.AddPosition(intvec2);
+        entity.isBorder = true;
+
+        _contexts.game.globals.value.BorderPositions.Add(intvec2);
     }
 
     private void CreateBarrierBlock(int x, int y)
     {
-        CreateBlock(x, y);
-    }
-
-    private IntVec2 CreateBlock(int x, int y)
-    {
-        var go = GameObject.Instantiate(_blockPrefab, new Vector2(x, y), Quaternion.identity);
         var entity = _contexts.game.CreateEntity();
         var intvec2 = new IntVec2(x, y);
         entity.AddPosition(intvec2);
-        entity.AddGameObject(go);
-        return intvec2;
+        entity.isBarrier = true;
     }
 }

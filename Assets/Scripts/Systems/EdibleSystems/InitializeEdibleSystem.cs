@@ -29,10 +29,5 @@ public class InitializeEdibleSystem : IInitializeSystem
         var edibleEntity = _contexts.game.CreateEntity();
         edibleEntity.isEdible = true;
         edibleEntity.AddPosition(position);
-        var go = GameObject.Instantiate(
-            ediblePrefab,
-            new Vector2(edibleEntity.position.value.X, edibleEntity.position.value.Y),
-            Quaternion.identity);
-        edibleEntity.ReplaceGameObject(go);
     }
 }

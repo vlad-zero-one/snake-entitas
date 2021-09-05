@@ -7,19 +7,31 @@ public class GameController : MonoBehaviour
 {
     public Globals Globals;
 
+    /*
+    public GameObject SnakeGameObject;
+    public GameObject BordersGameObject;
+    public GameObject BarriersGameObject;
+    public GameObject EdibleGameObject;
+    */
     private Systems _systems;
+
+    private Contexts _contexts;
 
     private void Start()
     {
-        Contexts contexts = Contexts.sharedInstance;
+        _contexts = Contexts.sharedInstance;
 
-        contexts.game.SetGlobals(Globals);
+        _contexts.game.SetGlobals(Globals);
 
-        SetCamera(contexts);
+        SetCamera(_contexts);
 
-        _systems = CreateSystems(contexts);
+        if (_systems == null)
+        {
+            _systems = CreateSystems(_contexts);
+        }
 
         _systems.Initialize();
+        //Debug.Log("STARTED");
     }
 
     private void Update()
@@ -33,13 +45,20 @@ public class GameController : MonoBehaviour
             .Add(new InitializeSnakeSystem(contexts))
             .Add(new InitializeOccupiedPossitions(contexts))
             .Add(new InitializeEdibleSystem(contexts))
+            .Add(new ViewEdibleSystem(contexts))
+            .Add(new ViewOccupiedPositionsSystem(contexts))
             .Add(new InputSystem(contexts))
             .Add(new MoveAndGrowSystem(contexts))
+            .Add(new ViewSnakeSystem(contexts))
             .Add(new CollisionCheckSystem(contexts))
             .Add(new SnakeEatSystem(contexts))
-            .Add(new SnakeViewSystem(contexts))
+            .Add(new RepositionSnakeGameObjectSystem(contexts))
+
+
+            .Add(new StartTimeSystem(contexts))
             .Add(new ChangeDeltaTimeSystem(contexts))
             .Add(new IncrementTickSystem(contexts))
+            //.Add(new RestartCleanUpSystem(contexts))
             ;
 
     }
@@ -54,5 +73,26 @@ public class GameController : MonoBehaviour
     {
         Globals.BorderPositions.Clear();
         Globals.SnakePositionsExceptHead.Clear();
+    }
+
+    public void Restart()
+    {
+        //_systems.TearDown();
+        //_systems.ClearReactiveSystems();
+        var s = new RestartSystem(_contexts);
+        s.Execute();
+
+        var i = new InitializeSnakeSystem(_contexts);
+        i.Initialize();
+
+        var e = new InitializeEdibleSystem(_contexts);
+        e.Initialize();
+
+
+        //_systems.Cleanup();
+        //_contexts.Reset();
+        //var n = new InitializeSnakeSystem(_contexts);
+        //n.Initialize();
+        //Start();
     }
 }
