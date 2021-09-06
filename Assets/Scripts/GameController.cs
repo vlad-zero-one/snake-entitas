@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
 
         _contexts.game.SetGlobals(Globals);
 
+        /*
         SetCamera(_contexts);
 
         if (_systems == null)
@@ -32,19 +33,21 @@ public class GameController : MonoBehaviour
 
         _systems.Initialize();
         //Debug.Log("STARTED");
+        */
     }
 
     private void Update()
     {
-        _systems.Execute();
+        if (_systems != null) _systems.Execute();
     }
-
+    /*
     private Systems CreateSystems(Contexts contexts)
     {
         return new Feature("Game")
             .Add(new InitializeSnakeSystem(contexts))
             .Add(new InitializeOccupiedPossitions(contexts))
             .Add(new InitializeEdibleSystem(contexts))
+
             .Add(new ViewEdibleSystem(contexts))
             .Add(new ViewOccupiedPositionsSystem(contexts))
             .Add(new InputSystem(contexts))
@@ -61,6 +64,42 @@ public class GameController : MonoBehaviour
             //.Add(new RestartCleanUpSystem(contexts))
             ;
 
+    }
+    */
+    private void NewGame(Contexts contexts, Systems game)
+    {
+        game
+        .Add(new InitializeSnakeSystem(contexts))
+        .Add(new InitializeOccupiedPossitions(contexts))
+        .Add(new InitializeEdibleSystem(contexts))
+        ;
+    }
+
+    private void LoadGame(Contexts contexts, Systems game)
+    {
+        game
+        .Add(new LoadSnakeSystem(contexts))
+        .Add(new LoadOccupiedSystem(contexts))
+        .Add(new LoadEdibleSystem(contexts))
+        ;
+    }
+
+    private void AddOtherSystems(Contexts contexts, Systems game)
+    {
+        game
+            .Add(new ViewEdibleSystem(contexts))
+            .Add(new ViewOccupiedPositionsSystem(contexts))
+            .Add(new InputSystem(contexts))
+            .Add(new MoveAndGrowSystem(contexts))
+            .Add(new ViewSnakeSystem(contexts))
+            .Add(new CollisionCheckSystem(contexts))
+            .Add(new SnakeEatSystem(contexts))
+            .Add(new RepositionSnakeGameObjectSystem(contexts))
+
+            .Add(new StartTimeSystem(contexts))
+            .Add(new ChangeDeltaTimeSystem(contexts))
+            .Add(new IncrementTickSystem(contexts))
+            ;
     }
 
     private void SetCamera(Contexts contexts)
@@ -80,7 +119,7 @@ public class GameController : MonoBehaviour
         //_systems.TearDown();
         //_systems.ClearReactiveSystems();
         var s = new RestartSystem(_contexts);
-        s.Execute();
+        s.Initialize();
 
         var i = new InitializeSnakeSystem(_contexts);
         i.Initialize();
@@ -94,5 +133,47 @@ public class GameController : MonoBehaviour
         //var n = new InitializeSnakeSystem(_contexts);
         //n.Initialize();
         //Start();
+    }
+
+    public void NewGame()
+    {
+        if (_systems == null)
+        {
+            _systems = new Feature("Game");
+        }
+        else
+        {
+            _systems.Add(new RestartSystem(_contexts));
+        }
+
+        NewGame(_contexts, _systems);
+
+        SetCamera(_contexts);
+
+        AddOtherSystems(_contexts, _systems);
+
+        _systems.Initialize();
+        Debug.Log("NEW GAME");
+    }
+
+    public void LoadGame()
+    {
+        if (_systems == null)
+        {
+            _systems = new Feature("Game");
+        }
+        else
+        {
+            _systems.Add(new RestartSystem(_contexts));
+        }
+
+        LoadGame(_contexts, _systems);
+
+        SetCamera(_contexts);
+
+        AddOtherSystems(_contexts, _systems);
+
+        _systems.Initialize();
+        Debug.Log("LOAD GAME");
     }
 }

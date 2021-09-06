@@ -2,88 +2,54 @@
 using Entitas.Unity;
 using UnityEngine;
 
-public class RestartSystem : IExecuteSystem
+public class RestartSystem : IInitializeSystem
 {
     private Contexts _contexts;
+
+    private GameObject _snakeParrent, _edibleParrent, _bordersParrent, _barriersParrent;
 
     public RestartSystem(Contexts contexts)
     {
         _contexts = contexts;
+        _snakeParrent = GameObject.Find("Snake");
+        _edibleParrent = GameObject.Find("Edible");
+        _bordersParrent = GameObject.Find("Borders");
+        _barriersParrent = GameObject.Find("Barriers");
     }
 
-    public void Execute()
+    public void Initialize()
     {
-        /*
-        var e = _contexts.game.CreateCollector(GameMatcher.Edible);
-        var ee = e.GetCollectedEntities<GameEntity>();
-        foreach(var eee in ee)
-        {
-            Debug.Log("!");
-            var go = eee.gameObject.value;
-            go.Unlink();
-            eee.RemoveGameObject();
-            GameObject.Destroy(go);
-            eee.Destroy();
-        }
-        */
         Debug.Log("EXECUTED RESTART");
-        var snake = GameObject.Find("Snake");
-        foreach (Transform segment in snake.transform)
+        foreach (Transform segment in _snakeParrent.transform)
         {
             var entity = segment.gameObject.GetEntityLink().entity;
             segment.gameObject.Unlink();
             entity.Destroy();
             GameObject.Destroy(segment.gameObject);
         }
-        var edibleGameObject = GameObject.Find("Edible").transform.GetChild(0).gameObject;
-        var edibleEntity = edibleGameObject.GetEntityLink().entity;
-        edibleGameObject.gameObject.Unlink();
-        edibleEntity.Destroy();
-        GameObject.Destroy(edibleGameObject);
+        foreach (Transform edible in _edibleParrent.transform)
+        {
+            var edibleEntity = edible.gameObject.GetEntityLink().entity;
+            edible.gameObject.Unlink();
+            edibleEntity.Destroy();
+            GameObject.Destroy(edible.gameObject);
+        }
+        foreach (Transform border in _bordersParrent.transform)
+        {
+            var borderEntity = border.gameObject.GetEntityLink().entity;
+            border.gameObject.Unlink();
+            borderEntity.Destroy();
+            GameObject.Destroy(border.gameObject);
+        }
+        foreach (Transform barrier in _barriersParrent.transform)
+        {
+            var barrierEntity = barrier.gameObject.GetEntityLink().entity;
+            barrier.gameObject.Unlink();
+            barrierEntity.Destroy();
+            GameObject.Destroy(barrier.gameObject);
+        }
 
+        // тут ошибка, не может обработать event вне Feature как я понял
         _contexts.game.isGameOver = false;
     }
-    /*
-public void Cleanup()
-{
-   var edible = _contexts.game.edibleEntity;
-   GameObject.Destroy(edible.gameObject.value);
-   edible.Destroy();
-
-   var currentEntity = _contexts.game.tailEntity;
-   while(currentEntity.hasPreviousSegment)
-   {
-       var nextEntity = currentEntity.previousSegment.value;
-       //GameObject.Destroy(currentEntity.gameObject.value);
-       currentEntity.Destroy();
-       currentEntity = nextEntity;
-   }
-   //GameObject.Destroy(currentEntity.gameObject.value);
-   currentEntity.Destroy();
-
-
-   Debug.Log(_contexts.game.count);
-   _contexts.game.DestroyAllEntities();
-   Debug.Log(_contexts.game.count);
-
-   //var borders = GameObject.Find("Borders");
-   //foreach(Transform border in borders.transform)
-   //{
-   //    GameObject.Destroy(border.gameObject);
-   //}
-   //var barriers = GameObject.Find("Barriers");
-   //foreach (Transform barrier in barriers.transform)
-   //{
-   //    GameObject.Destroy(barriers.gameObject);
-   //}
-   var snake = GameObject.Find("Snake");
-   foreach (Transform segment in snake.transform)
-   {
-       GameObject.Destroy(snake.gameObject);
-   }
-   //var edibleGO = GameObject.Find("Edible");
-   //GameObject.Destroy(edibleGO.transform.GetChild(0).gameObject);
-}
-*/
-
 }
