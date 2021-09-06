@@ -27,5 +27,7 @@ public class SaveSnakeSystem : IExecuteSystem
 
         int isGrowing = _contexts.game.headEntity.isGrowing == true ? 1 : 0;
         PlayerPrefs.SetInt("IsGrowing", isGrowing);
+
+        PlayerPrefs.SetFloat("Speed", _contexts.game.globals.value.Speed);
     }
 }

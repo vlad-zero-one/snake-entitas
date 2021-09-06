@@ -38,6 +38,7 @@ public class ViewEdibleSystem : ReactiveSystem<GameEntity>
                 _edible.transform);
             go.Link(entity);
             entity.AddGameObject(go);
+
         }
     }
 }

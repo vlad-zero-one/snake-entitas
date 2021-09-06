@@ -2,13 +2,13 @@
 using Entitas.Unity;
 using UnityEngine;
 
-public class RestartSystem : IInitializeSystem
+public class CleanupSystem : ICleanupSystem
 {
     private Contexts _contexts;
 
     private GameObject _snakeParrent, _edibleParrent, _bordersParrent, _barriersParrent;
 
-    public RestartSystem(Contexts contexts)
+    public CleanupSystem(Contexts contexts)
     {
         _contexts = contexts;
         _snakeParrent = GameObject.Find("Snake");
@@ -17,7 +17,7 @@ public class RestartSystem : IInitializeSystem
         _barriersParrent = GameObject.Find("Barriers");
     }
 
-    public void Initialize()
+    public void Cleanup()
     {
         Debug.Log("EXECUTED RESTART");
         foreach (Transform segment in _snakeParrent.transform)
@@ -49,7 +49,6 @@ public class RestartSystem : IInitializeSystem
             GameObject.Destroy(barrier.gameObject);
         }
 
-        // тут ошибка, не может обработать event вне Feature как я понял
         _contexts.game.isGameOver = false;
     }
 }

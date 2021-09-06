@@ -1,16 +1,28 @@
 ﻿using Entitas;
 using UnityEngine;
 
-public class LoadOccupiedSystem : IInitializeSystem
+public class LoadOrInitOccupiedSystem : IInitializeSystem
 {
     private Contexts _contexts;
 
-    public LoadOccupiedSystem(Contexts contexts)
+    public LoadOrInitOccupiedSystem(Contexts contexts)
     {
         _contexts = contexts;
     }
 
     public void Initialize()
+    {
+        if (_contexts.game.isLoad)
+        {
+            Load();
+        }
+        else
+        {
+            Init();
+        }
+    }
+
+    public void Load()
     {
         _contexts.game.globals.value.BorderSize = PlayerPrefs.GetInt("BorderSize");
 
@@ -30,6 +42,26 @@ public class LoadOccupiedSystem : IInitializeSystem
 
             barriersList.Add(barrierPosition);
         }
+
+        int borderSize = _contexts.game.globals.value.BorderSize;
+        for (int i = 0; i < borderSize + 1; i++)
+        {
+            CreateBorderBlock(-1, i - 1);
+            CreateBorderBlock(i - 1, borderSize);
+            CreateBorderBlock(borderSize, i);
+            CreateBorderBlock(i, -1);
+        }
+        var barriers = _contexts.game.globals.value.BarrierPositions;
+        foreach (var intvec2 in barriers)
+        {
+            CreateBarrierBlock(intvec2.X, intvec2.Y);
+        }
+    }
+
+    public void Init()
+    {
+        if (_contexts.game.globals.value.BorderPositions != null)
+            _contexts.game.globals.value.BorderPositions.Clear();
 
         int borderSize = _contexts.game.globals.value.BorderSize;
         for (int i = 0; i < borderSize + 1; i++)

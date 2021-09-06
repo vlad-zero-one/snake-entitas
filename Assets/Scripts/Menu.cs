@@ -1,18 +1,20 @@
-﻿using Entitas.Unity;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Entitas;
 using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public GameObject ContinueButton;
-    public GameObject LoadGameButton;
     public GameObject NewGameButton;
+    public GameObject LoadGameButton;
+    public GameObject SaveGameButton;
+    public GameObject RestartGameButton;
     public GameObject ExitGameButton;
+    public GameObject SelectLevel;
 
     public GameController GameController;
 
     private Contexts _contexts;
+
+    private Systems _saveSystems;
 
     void Start()
     {
@@ -26,16 +28,16 @@ public class Menu : MonoBehaviour
             if (Time.timeScale != 0)
             {
                 Time.timeScale = 0;
-                ContinueButton.SetActive(true);
                 NewGameButton.SetActive(true);
+                LoadGameButton.SetActive(true);
+                SaveGameButton.SetActive(true);
+                RestartGameButton.SetActive(true);
                 ExitGameButton.SetActive(true);
             }
             else
             {
                 Time.timeScale = 1;
-                ContinueButton.SetActive(false);
-                NewGameButton.SetActive(false);
-                ExitGameButton.SetActive(false);
+                DeactivateAll();
             }
         }
     }
@@ -47,41 +49,26 @@ public class Menu : MonoBehaviour
 
     public void SaveGame()
     {
-        //new Feature("SaveGame");
-
         PlayerPrefs.DeleteAll();
 
         _contexts = Contexts.sharedInstance;
 
-        var ed = new SaveEdibleSystem(_contexts);
-        var sn = new SaveSnakeSystem(_contexts);
-        var oc = new SaveOccupiedSystem(_contexts);
-        ed.Execute();
-        sn.Execute();
-        oc.Execute();
+        if (_saveSystems == null)
+        {
+            _saveSystems = new Systems();
+            _saveSystems
+                .Add(new SaveEdibleSystem(_contexts))
+                .Add(new SaveSnakeSystem(_contexts))
+                .Add(new SaveOccupiedSystem(_contexts))
+                ;
+        }
 
+        _saveSystems.Execute();
         PlayerPrefs.Save();
     }
 
     public void LoadGame()
     {
-        /*
-        var s = new RestartSystem(_contexts);
-        s.Execute();
-
-        _contexts = Contexts.sharedInstance;
-
-        _contexts.game.globals.value.BorderSize = PlayerPrefs.GetInt("BorderSize");
-
-        // Set Borders here
-
-        var le = new LoadEdibleSystem(_contexts);
-        le.Execute();
-        var ls = new LoadSnakeSystem(_contexts);
-        ls.Execute();
-        var lo = new LoadOccupiedSystem(_contexts);
-        lo.Execute();
-        */
         GameController.LoadGame();
     }
  
@@ -93,5 +80,15 @@ public class Menu : MonoBehaviour
     public void Restart()
     {
         GameController.Restart();
+    }
+
+    private void DeactivateAll()
+    {
+        NewGameButton.SetActive(false);
+        LoadGameButton.SetActive(false);
+        SaveGameButton.SetActive(false);
+        RestartGameButton.SetActive(false);
+        ExitGameButton.SetActive(false);
+        SelectLevel.SetActive(false);
     }
 }
