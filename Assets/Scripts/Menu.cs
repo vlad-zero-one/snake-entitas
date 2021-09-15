@@ -65,21 +65,31 @@ public class Menu : MonoBehaviour
 
         _saveSystems.Execute();
         PlayerPrefs.Save();
+
+        Debug.Log("GAME SAVED");
     }
 
     public void LoadGame()
     {
         GameController.LoadGame();
+
+        Debug.Log("GAME LOADED");
     }
- 
+
     public void NewGame()
     {
         GameController.NewGame();
+
+        Time.timeScale = 1;
+        DeactivateAll();
     }
 
     public void Restart()
     {
         GameController.Restart();
+
+        Time.timeScale = 1;
+        DeactivateAll();
     }
 
     private void DeactivateAll()
